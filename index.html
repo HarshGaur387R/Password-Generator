@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password-Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="util.css">
+
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+        }
+
+        #box {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            flex-direction: column;
+
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            min-width: 200px;
+            height: 500px;
+            background-color: aliceblue;
+            border: 2px solid rgb(171, 197, 208);
+            gap: 15px;
+        }
+
+        #box button {
+            height: 40px;
+        }
+
+        #btn {
+            width: 150px;
+            border-radius: 10px;
+            border: 0px;
+            background-color: rgb(47, 169, 213);
+            color: white;
+        }
+
+        #btn:active {
+            background-color: rgb(43, 141, 176);
+        }
+
+        #dropdownBtn {
+            display: block;
+        }
+
+        #dropdownBtn2 {
+            display: none;
+        }
+
+        @media screen and (max-width:700px) {
+
+
+            #dropdownBtn {
+                display: none;
+            }
+
+
+            #dropdownBtn2 {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container" class="jc-center ai-center flex">
+
+        <div id="box">
+
+            <div class="input-group mb-3" style="height: 20px; width: 80%;">
+                <input id="ps-input" type="text" class="form-control" placeholder="Click Generate Button!"
+                    aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Copy</button>
+                <button id="dropdownBtn" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">Strong Password</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item cr-pointer">Weak Password</a></li>
+                    <li><a class="dropdown-item cr-pointer">Easy Password</a></li>
+                    <li><a class="dropdown-item cr-pointer">Strong Password</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>
+
+            </div>
+
+            <button id="dropdownBtn2" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">Select
+            </button>
+
+            <div class="btn-container">
+                <button id="btn">Generate</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+        </script>
+
+    <script>
+
+        window.addEventListener('load',()=>{
+            document.getElementById('ps-input').value = '';
+        })
+
+        function rangedRandomNumber(min, max) {
+            let random = Math.floor(Math.random() * (max - min)) + min;
+            return random;
+        }
+
+        class generatePassword {
+
+            constructor(limit) {
+                this.limit = limit
+                this.password = new Array(limit);
+            }
+
+            generateWeekPassword() {
+
+                let random;
+                let index = 0;
+
+                let min = 48;   // ASCII of 0 is 48
+                let max = 57;   // ASCII of 9 is 57
+
+                while (index < this.limit) {
+                    random = rangedRandomNumber(min, max);
+                    this.password[index] = String.fromCharCode(random);
+                    index++;
+                }
+
+                return this.password.join('');
+
+            }
+
+            generateEasyPassword() {
+                let random;
+                let random_index;
+                let index = 0;
+
+                function easyPassword(min, max,password) {
+                    while (index < 4) {
+
+                        random = Math.floor(Math.random() * (max - min))+min;
+                        random_index = Math.floor(Math.random() * 12);
+
+                        if (password[random_index] == undefined) {
+                            password[random_index] = String.fromCharCode(random);
+                            index++;
+                        }
+                    }
+                    index = 0;
+                }
+
+                // At least 4 digits.
+                easyPassword(48,57,this.password);
+
+                // At least 4 Capital Alphabet
+                easyPassword(65,90,this.password);
+
+                // At least 4 Small Alphabet
+                easyPassword(97,122,this.password);
+
+                return this.password.join('');
+            }
+
+            generateStrongPassword() {
+
+                let random;
+                let random_index;
+                let index = 0;
+
+                function strongPassword(min, max,password,lim) {
+
+                    while (index < lim) {
+                        console.log(lim,index);
+                        random = Math.floor(Math.random() * (max - min))+min;
+                        random_index = Math.floor(Math.random() * 12);
+
+                        if (password[random_index] == undefined) {
+                            password[random_index] = String.fromCharCode(random);
+                            index++;
+                        }
+                    }
+                    index = 0;
+                }
+
+                // At least 4 digits.
+                strongPassword(48,57,this.password,4);
+
+                // At least 4 Capital Alphabet
+                strongPassword(65,90,this.password,4);
+
+                // At least 4 Small Alphabet
+                strongPassword(97,122,this.password,4);
+
+                // At least 2 symbol
+                random_index = Math.floor(Math.random() * 12);
+                this.password[random_index] = '$';
+
+                random_index = Math.floor(Math.random() * 12);
+                this.password[random_index] = '@';
+
+                return this.password.join('');
+            }
+        }
+
+        function changeDropdownBtnValue(btnId) {
+
+            let menu = document.querySelector('.dropdown-menu');
+            let menuChilds = Array.from(menu.children);
+
+            menuChilds.forEach(e => {
+                e.addEventListener('click', () => {
+                    document.getElementById(btnId).textContent = e.textContent;
+                });
+            });
+
+        }
+
+        document.getElementById('dropdownBtn').addEventListener('click', () => { changeDropdownBtnValue('dropdownBtn') });
+        document.getElementById('dropdownBtn2').addEventListener('click', () => { changeDropdownBtnValue('dropdownBtn2') });
+
+        document.getElementById('button-addon2').addEventListener('click', () => {
+
+
+            var Input = document.getElementById('ps-input');
+            Input.select();
+            Input.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(Input.value);
+            }
+            else {
+                alert('This function does not work in this browser');
+            }
+        });
+
+        document.getElementById('btn').addEventListener('click', () => {
+
+            let dropBtn = document.getElementById('dropdownBtn');   // drop button for larger screen
+            let dropBtn2 = document.getElementById('dropdownBtn2'); // drop button for smaller screen
+
+            let obj = new generatePassword(12);
+
+
+
+            if (dropBtn.offsetHeight != 0 && dropBtn.offsetWidth != 0) { // Checking if dropBtn is display block 
+
+                if (dropBtn.textContent == 'Strong Password') {
+                    document.getElementById('ps-input').value = obj.generateStrongPassword(12);
+                }
+                else if (dropBtn.textContent == 'Easy Password') {
+                    document.getElementById('ps-input').value = obj.generateEasyPassword(12);
+                }
+                else if (dropBtn.textContent == 'Weak Password') {
+                    document.getElementById('ps-input').value = obj.generateWeekPassword(12);
+                }
+            }
+            else {
+                if (dropBtn2.textContent == 'Strong Password') {
+                    document.getElementById('ps-input').value = obj.generateStrongPassword(12);
+                }
+                else if (dropBtn2.textContent == 'Easy Password') {
+                    document.getElementById('ps-input').value = obj.generateEasyPassword(12);
+                }
+                else if (dropBtn2.textContent == 'Weak Password') {
+                    document.getElementById('ps-input').value = obj.generateWeekPassword(12);
+                }
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
