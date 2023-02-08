@@ -4,7 +4,6 @@ The Password Generator repository contains a responsive web application that gen
 ## Features
 
 - Generate passwords of various strength levels (weak, easy, strong)
-- Customize password length and include special characters
 - Responsive design, works on all devices
 - Easy-to-use interface
 
